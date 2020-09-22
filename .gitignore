@@ -1,3 +1,6 @@
+# Api Keys
+/lib/auth/secrets.json
+
 # Miscellaneous
 *.class
 *.log
@@ -30,7 +33,7 @@
 .pub-cache/
 .pub/
 /build/
-
+*.json
 # Web related
 lib/generated_plugin_registrant.dart
 
@@ -39,9 +42,6 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
-
-# Api Keys
-/lib/auth/secrets.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
