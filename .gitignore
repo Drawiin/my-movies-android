@@ -1,5 +1,5 @@
 # Api Keys
-/lib/auth/secrets.json
+*.json
 
 # Miscellaneous
 *.class
@@ -33,7 +33,6 @@
 .pub-cache/
 .pub/
 /build/
-*.json
 # Web related
 lib/generated_plugin_registrant.dart
 
