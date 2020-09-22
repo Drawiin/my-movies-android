@@ -2,7 +2,7 @@
 *.json
 
 # Miscellaneous
-*.class
+*.classgit
 *.log
 *.pyc
 *.swp
