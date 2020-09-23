@@ -1,19 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:my_movies_app/moviesList.dart';
+import 'package:my_movies_app/repository.dart';
 
 import 'entities.dart';
-
-const API_KEY = 'ef60f290754b298f307a2b64735fddfb';
-const LANGUAGE = 'pt-BR';
-
-Future<PopularMovies> fetchPopularMovies(int page) async {
-  final response = await http.get(
-      'https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=$LANGUAGE&page=$page');
-  return PopularMovies.fromJson(jsonDecode(response.body));
-}
 
 class Home extends StatefulWidget {
   @override
@@ -21,30 +9,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Future<PopularMovies> popularMovies;
-  var currentPage = 1;
-  final movies = List<Movie>();
+  final _moviesRepository = MoviesRepository();
+  final _movies = <Movie>[];
+  var _currentPage = 1;
+
+  _loadNextPage() async {
+    final popularMovies =
+        await _moviesRepository.fetchPopularMovies(_currentPage);
+    _movies.addAll(popularMovies.results);
+  }
+
+  Widget _loadingPlaceholder() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    popularMovies = fetchPopularMovies(currentPage);
+    _loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: FutureBuilder<PopularMovies>(
-      future: popularMovies,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return MoviesList(snapshot.data.results);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        return CircularProgressIndicator();
-      },
-    ));
+    return _movies.isEmpty
+        ? _loadingPlaceholder()
+        : ListView.builder(
+            itemBuilder: (context, index) =>
+                ListTile(title: Text(_movies[index].title)),
+            itemCount: _movies.length,
+          );
   }
 }
