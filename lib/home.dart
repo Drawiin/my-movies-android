@@ -15,9 +15,9 @@ class _HomeState extends State<Home> {
   int _totalPages;
 
   _reload() async {
-    setState(() => _currentPage = 1);
-    final popularMovies = await _moviesRepository.loadMovies(_currentPage);
+    final popularMovies = await _moviesRepository.loadMovies(1);
     setState(() {
+      _currentPage = 1;
       _totalPages = popularMovies.totalPages;
       _movies.clear();
       _movies.addAll(popularMovies.results);
