@@ -11,12 +11,27 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _moviesRepository = MoviesRepository();
   final _movies = <Movie>[];
-  var _currentPage = 1;
+  int _currentPage;
+  int _totalPages;
+
+  _reload() async {
+    setState(() => _currentPage = 1);
+    final popularMovies = await _moviesRepository.loadMovies(_currentPage);
+    setState(() {
+      _totalPages = popularMovies.totalPages;
+      _movies.clear();
+      _movies.addAll(popularMovies.results);
+    });
+  }
 
   _loadNextPage() async {
-    final popularMovies =
-        await _moviesRepository.fetchPopularMovies(_currentPage);
-    _movies.addAll(popularMovies.results);
+    if((_currentPage + 1) > _totalPages) return;
+    final popularMovies = await _moviesRepository.loadMovies(_currentPage + 1);
+    setState(() {
+      _totalPages = popularMovies.totalPages;
+      _currentPage++;
+      _movies.addAll(popularMovies.results);
+    });
   }
 
   Widget _loadingPlaceholder() {
@@ -28,7 +43,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _loadNextPage();
+    _totalPages = 1;
+    _reload();
   }
 
   @override
@@ -36,9 +52,16 @@ class _HomeState extends State<Home> {
     return _movies.isEmpty
         ? _loadingPlaceholder()
         : ListView.builder(
-            itemBuilder: (context, index) =>
-                ListTile(title: Text(_movies[index].title)),
-            itemCount: _movies.length,
+            itemBuilder: (context, index) {
+              if (index == _movies.length) return _loadingPlaceholder();
+
+              if (index == _movies.length - 1) _loadNextPage();
+
+              return ListTile(
+                title: Text(_movies[index].title),
+              );
+            },
+            itemCount: _movies.length + 1,
           );
   }
 }
