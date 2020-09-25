@@ -17,10 +17,11 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: AppColors.primary,
             title: Text(
-              'Popular',
+              'Filmes populares',
               style: TextStyle(color: AppColors.textOnPrimary),
             ),
           ),
+          backgroundColor: AppColors.primary,
           body: Home(),
         ),
       ),

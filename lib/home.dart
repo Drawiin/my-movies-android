@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_movies_app/repository.dart';
 
 import 'entities.dart';
+import 'movieCard.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
   }
 
   _loadNextPage() async {
-    if((_currentPage + 1) > _totalPages) return;
+    if ((_currentPage + 1) > _totalPages) return;
     final popularMovies = await _moviesRepository.loadMovies(_currentPage + 1);
     setState(() {
       _totalPages = popularMovies.totalPages;
@@ -52,14 +53,13 @@ class _HomeState extends State<Home> {
     return _movies.isEmpty
         ? _loadingPlaceholder()
         : ListView.builder(
+            padding: EdgeInsets.only(left: 8, right: 8),
             itemBuilder: (context, index) {
               if (index == _movies.length) return _loadingPlaceholder();
 
               if (index == _movies.length - 1) _loadNextPage();
 
-              return ListTile(
-                title: Text(_movies[index].title),
-              );
+              return MovieCard(_movies[index]);
             },
             itemCount: _movies.length + 1,
           );

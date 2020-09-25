@@ -13,4 +13,8 @@ class MoviesRepository {
         'https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=$LANGUAGE&page=$page');
     return PopularMovies.fromJson(jsonDecode(response.body));
   }
+
+  String resolveImagePath(String path){
+    return 'https://image.tmdb.org/t/p/w300/$path';
+  }
 }
