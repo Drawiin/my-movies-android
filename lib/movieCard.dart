@@ -21,37 +21,45 @@ class MovieCard extends StatelessWidget {
         ),
         elevation: 1,
         child: Container(
+          width: double.infinity,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Stack(
-                children: [
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 80, bottom: 80),
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.textOnPrimary),
+              Container(
+                height: 250,
+                width: double.infinity,
+                child: Stack(
+                  fit: StackFit.passthrough,
+                  children: [
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 80, bottom: 80),
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.textOnPrimary),
+                        ),
                       ),
                     ),
-                  ),
-                  FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image:
-                        'https://image.tmdb.org/t/p/w300/${movie.backdropPath}',
-                    fit: BoxFit.fill,
-                    width: double.infinity,
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.favorite_border,
-                        color: AppColors.textOnSecondary,
-                        size: 24,
+                    Container(
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image:
+                            'https://image.tmdb.org/t/p/w300/${movie.backdropPath}',
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
-                  )
-                ],
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.favorite_border,
+                            size: 36,
+                            color: AppColors.textOnSecondary,
+                          ),
+                          onPressed: () => {},
+                        )),
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.all(8),
