@@ -1,11 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:my_movies_app/colors.dart';
 
-import 'home.dart';
+import 'screens/home.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  static final List<Widget> _widgetOptions = <Widget>[
+    Home(),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,14 +43,31 @@ class MyApp extends StatelessWidget {
         title: 'My Movies',
         home: Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.primary,
             title: Text(
               'Filmes populares',
               style: TextStyle(color: AppColors.textOnPrimary),
             ),
           ),
-          backgroundColor: AppColors.primary,
-          body: Home(),
+          body: _widgetOptions.elementAt(_selectedIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.movie),
+                title: Text('Home'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                title: Text('Business'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                title: Text('School'),
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: AppColors.textOnPrimary,
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );

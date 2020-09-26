@@ -14,7 +14,7 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        color: AppColors.secondary,
+        color: AppColors.primary,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
@@ -54,20 +54,20 @@ class MovieCard extends StatelessWidget {
                           icon: Icon(
                             Icons.favorite_border,
                             size: 36,
-                            color: AppColors.textOnSecondary,
+                            color: AppColors.textOnPrimary,
                           ),
                           onPressed: () => {},
                         )),
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Text(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: ListTile(
+                      title: Text(
                         movie.title,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -76,26 +76,30 @@ class MovieCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      subtitle: Text(movie.releaseDate.split('-')[0]),
                     ),
-                    Row(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(right: 2),
                           child: Icon(
                             Icons.star,
-                            size: 18,
+                            size: 20,
                             color: Colors.yellowAccent,
                           ),
                         ),
                         Text(
                           movie.voteAverage.toString(),
-                          style: TextStyle(color: AppColors.textOnSecondary),
+                          style: TextStyle(color: AppColors.textOnPrimary, fontSize: 20),
                         ),
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ],
           ),

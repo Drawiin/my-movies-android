@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_movies_app/repository.dart';
 
-import 'entities.dart';
-import 'movieCard.dart';
+import '../entities.dart';
+import '../movieCard.dart';
 
 class Home extends StatefulWidget {
   @override
