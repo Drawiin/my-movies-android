@@ -1,12 +1,12 @@
-class PopularMovies {
+class PopularMoviesRequest {
   final int page;
   final int totalResults;
   final int totalPages;
   final List<Movie> results;
 
-  PopularMovies(this.page, this.totalResults, this.totalPages, this.results);
+  PopularMoviesRequest(this.page, this.totalResults, this.totalPages, this.results);
 
-  PopularMovies.fromJson(Map<String, dynamic> json)
+  PopularMoviesRequest.fromJson(Map<String, dynamic> json)
       : page = json['page'],
         totalResults = json['total_results'],
         totalPages = json['total_pages'],

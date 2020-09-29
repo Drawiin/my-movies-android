@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:my_movies_app/colors.dart';
-import 'package:my_movies_app/entities.dart';
+import 'package:my_movies_app/entities/entities.dart';
+import 'package:my_movies_app/styles/colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
+  final Function remove;
+  final Function add;
+  final bool isFavorite;
 
-  MovieCard(this.movie);
+  MovieCard(this.movie, this.remove, this.add, this.isFavorite);
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +55,16 @@ class MovieCard extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: IconButton(
                           icon: Icon(
-                            Icons.favorite_border,
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
                             size: 36,
                             color: AppColors.textOnPrimary,
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            if (isFavorite)
+                              {remove(movie.id)}
+                            else
+                              {add(movie.id)}
+                          },
                         )),
                   ],
                 ),
@@ -94,7 +102,8 @@ class MovieCard extends StatelessWidget {
                         ),
                         Text(
                           movie.voteAverage.toString(),
-                          style: TextStyle(color: AppColors.textOnPrimary, fontSize: 20),
+                          style: TextStyle(
+                              color: AppColors.textOnPrimary, fontSize: 20),
                         ),
                       ],
                     ),

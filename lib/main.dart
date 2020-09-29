@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_movies_app/colors.dart';
+import 'file:///C:/Users/vini6/projects/my-movies-android/lib/styles/colors.dart';
 
-import 'screens/home.dart';
+import 'screens/Home.dart';
 
 void main() => runApp(MyApp());
 
@@ -53,15 +53,15 @@ class _MyAppState extends State<MyApp> {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.movie),
-                title: Text('Home'),
+                title: Text('Populares'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite),
-                title: Text('Business'),
+                title: Text('Favoritos'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                title: Text('School'),
+                title: Text('Buscar'),
               ),
             ],
             currentIndex: _selectedIndex,
