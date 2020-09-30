@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/screens/Favorites.dart';
+import 'package:my_movies_app/screens/Search.dart';
+
 import 'file:///C:/Users/vini6/projects/my-movies-android/lib/styles/colors.dart';
 
 import 'screens/Home.dart';
@@ -12,6 +15,37 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
+  void pageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget buildPageView() {
+    return PageView(
+      controller: pageController,
+      onPageChanged: (index) {
+        pageChanged(index);
+      },
+      children: [Home(), Favorites(), Search()],
+    );
+  }
+
+  List<BottomNavigationBarItem> buildBottomNavigationItens() {
+    return [
+      BottomNavigationBarItem(
+          icon: Icon(Icons.local_movies), title: Text('Populares')),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.favorite), title: Text('Favoritos')),
+      BottomNavigationBarItem(icon: Icon(Icons.search), title: Text('Buscar'))
+    ];
+  }
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -31,7 +65,14 @@ class _MyAppState extends State<MyApp> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      pageController.animateToPage(index,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -42,31 +83,13 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData.dark(),
         title: 'My Movies',
         home: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Filmes populares',
-              style: TextStyle(color: AppColors.textOnPrimary),
-            ),
-          ),
-          body: _widgetOptions.elementAt(_selectedIndex),
+          body: buildPageView(),
           bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.movie),
-                title: Text('Populares'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                title: Text('Favoritos'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                title: Text('Buscar'),
-              ),
-            ],
+            items: buildBottomNavigationItens(),
             currentIndex: _selectedIndex,
             selectedItemColor: AppColors.textOnPrimary,
             onTap: _onItemTapped,
+            elevation: 8,
           ),
         ),
       ),

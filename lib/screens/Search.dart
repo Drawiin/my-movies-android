@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_movies_app/styles/colors.dart';
 
-class Favorites extends StatefulWidget {
+class Search extends StatefulWidget {
   @override
-  _FavoritesState createState() => _FavoritesState();
+  _SearchState createState() => _SearchState();
 }
 
-class _FavoritesState extends State<Favorites> {
+class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.primary,
+      color: AppColors.secondary,
     );
   }
 }
