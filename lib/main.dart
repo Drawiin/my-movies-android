@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_movies_app/screens/Favorites.dart';
 import 'package:my_movies_app/screens/Search.dart';
 
-import 'file:///C:/Users/vini6/projects/my-movies-android/lib/styles/colors.dart';
+import 'file:///C:/Users/vini6/projects/my-movies-android/lib/styles/AppColors.dart';
 
 import 'screens/Home.dart';
 
@@ -82,14 +82,16 @@ class _MyAppState extends State<MyApp> {
       home: MaterialApp(
         theme: ThemeData.dark(),
         title: 'My Movies',
-        home: Scaffold(
-          body: buildPageView(),
-          bottomNavigationBar: BottomNavigationBar(
-            items: buildBottomNavigationItens(),
-            currentIndex: _selectedIndex,
-            selectedItemColor: AppColors.textOnPrimary,
-            onTap: _onItemTapped,
-            elevation: 8,
+        home: SafeArea(
+          child: Scaffold(
+            body: buildPageView(),
+            bottomNavigationBar: BottomNavigationBar(
+              items: buildBottomNavigationItens(),
+              currentIndex: _selectedIndex,
+              selectedItemColor: AppColors.textOnPrimary,
+              onTap: _onItemTapped,
+              elevation: 8,
+            ),
           ),
         ),
       ),

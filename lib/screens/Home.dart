@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/components/LoadingPlaceholder.dart';
 import 'package:my_movies_app/components/MovieCard.dart';
 import 'package:my_movies_app/entities/entities.dart';
+import 'package:my_movies_app/repositories/MoviesRepository.dart';
 import 'package:my_movies_app/services/ApiClient.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,10 +11,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const FAVORITES_KEY = "FAVORITES_KEY";
   final _apiClient = ApiClient();
+  final moviesRepository = MoviesRepository();
   final _movies = <Movie>[];
-  final _favorites = <int>[];
+  final _favorites = <Movie>[];
   int _currentPage;
   int _totalPages;
 
@@ -37,66 +38,60 @@ class _HomeState extends State<Home> {
     });
   }
 
-  _loadFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    final loadedFavorites = prefs.getStringList(FAVORITES_KEY) ?? <String>[];
+  loadFavorites() async {
+    final favorites = await moviesRepository.loadFavoriteMovies();
     setState(() {
-      _favorites.addAll(loadedFavorites.map((e) => int.parse(e)).toList());
+      _favorites.clear();
+      _favorites.addAll(favorites);
     });
   }
 
   _saveFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(
-        FAVORITES_KEY, _favorites.map((e) => e.toString()).toList());
+    moviesRepository.saveFavoriteMovies(_favorites);
   }
 
-  _addToFavorite(int movieId) {
+  _addToFavorite(Movie movie) {
     setState(() {
-      _favorites.add(movieId);
+      _favorites.add(movie);
+      _saveFavorites();
     });
-    _saveFavorites();
   }
 
   _removeFromFavorite(int movieId) {
     setState(() {
-      _favorites.removeWhere((id) => id == movieId);
+      _favorites.removeWhere((movie) => movie.id == movieId);
+      _saveFavorites();
     });
-    _saveFavorites();
   }
 
-  _isFavorite(int movieId) {
-    return _favorites.contains(movieId);
+  _isFavorite(Movie movie) {
+    return _favorites.indexWhere((element) => element.id == movie.id) > -1;
   }
 
-  Widget _loadingPlaceholder() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+  Widget itemBuilder(BuildContext context, int index) {
+    if (index == _movies.length) return LoadingPlaceholder();
+
+    if (index == _movies.length - 1) _loadNextPage();
+
+    return MovieCard(_movies[index], _removeFromFavorite, _addToFavorite,
+        _isFavorite(_movies[index]));
   }
 
   @override
   void initState() {
     super.initState();
     _totalPages = 1;
-    _loadFavorites();
+    loadFavorites();
     _reload();
   }
 
   @override
   Widget build(BuildContext context) {
     return _movies.isEmpty
-        ? _loadingPlaceholder()
+        ? LoadingPlaceholder()
         : ListView.builder(
             padding: EdgeInsets.only(left: 8, right: 8),
-            itemBuilder: (context, index) {
-              if (index == _movies.length) return _loadingPlaceholder();
-
-              if (index == _movies.length - 1) _loadNextPage();
-
-              return MovieCard(_movies[index], _removeFromFavorite,
-                  _addToFavorite, _isFavorite(_movies[index].id));
-            },
+            itemBuilder: itemBuilder,
             itemCount: _movies.length + 1,
           );
   }

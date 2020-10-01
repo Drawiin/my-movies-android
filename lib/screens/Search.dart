@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_movies_app/styles/colors.dart';
+import 'package:my_movies_app/styles/AppColors.dart';
 
 class Search extends StatefulWidget {
   @override

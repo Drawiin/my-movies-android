@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:my_movies_app/components/LoadingPlaceholder.dart';
 import 'package:my_movies_app/entities/entities.dart';
-import 'package:my_movies_app/styles/colors.dart';
+import 'package:my_movies_app/styles/AppColors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
-  final Function remove;
-  final Function add;
+  final Function(int) remove;
+  final Function(Movie) add;
   final bool isFavorite;
 
   MovieCard(this.movie, this.remove, this.add, this.isFavorite);
@@ -37,10 +38,7 @@ class MovieCard extends StatelessWidget {
                     Center(
                       child: Container(
                         margin: EdgeInsets.only(top: 80, bottom: 80),
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.textOnPrimary),
-                        ),
+                        child: LoadingPlaceholder(),
                       ),
                     ),
                     Container(
@@ -60,10 +58,7 @@ class MovieCard extends StatelessWidget {
                             color: AppColors.textOnPrimary,
                           ),
                           onPressed: () => {
-                            if (isFavorite)
-                              {remove(movie.id)}
-                            else
-                              {add(movie.id)}
+                            if (isFavorite) {remove(movie.id)} else {add(movie)}
                           },
                         )),
                   ],
