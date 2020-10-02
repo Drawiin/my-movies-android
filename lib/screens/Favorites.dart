@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_movies_app/components/MovieCard.dart';
-import 'package:my_movies_app/entities/entities.dart';
+import 'package:my_movies_app/entities/Movie.dart';
 import 'package:my_movies_app/repositories/MoviesRepository.dart';
 
 class Favorites extends StatefulWidget {

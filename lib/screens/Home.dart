@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_movies_app/components/LoadingPlaceholder.dart';
 import 'package:my_movies_app/components/MovieCard.dart';
-import 'package:my_movies_app/entities/entities.dart';
+import 'package:my_movies_app/entities/Movie.dart';
 import 'package:my_movies_app/repositories/MoviesRepository.dart';
 import 'package:my_movies_app/services/ApiClient.dart';
 
@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   int _totalPages;
 
   _reload() async {
-    final popularMovies = await _apiClient.loadMovies(1);
+    final popularMovies = await _apiClient.getPopularMovies(1);
     setState(() {
       _currentPage = 1;
       _totalPages = popularMovies.totalPages;
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
 
   _loadNextPage() async {
     if ((_currentPage + 1) > _totalPages) return;
-    final popularMovies = await _apiClient.loadMovies(_currentPage + 1);
+    final popularMovies = await _apiClient.getPopularMovies(_currentPage + 1);
     setState(() {
       _totalPages = popularMovies.totalPages;
       _currentPage++;

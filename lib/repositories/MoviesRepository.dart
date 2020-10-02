@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:my_movies_app/entities/entities.dart';
+import 'package:my_movies_app/entities/Movie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MoviesRepository {

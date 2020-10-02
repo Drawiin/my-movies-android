@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:my_movies_app/components/LoadingPlaceholder.dart';
-import 'package:my_movies_app/entities/entities.dart';
+import 'package:my_movies_app/entities/Movie.dart';
 import 'package:my_movies_app/styles/AppColors.dart';
 import 'package:transparent_image/transparent_image.dart';
 

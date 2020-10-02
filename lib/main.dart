@@ -47,21 +47,6 @@ class _MyAppState extends State<MyApp> {
     ];
   }
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  static final List<Widget> _widgetOptions = <Widget>[
-    Home(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -78,20 +63,17 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: MaterialApp(
-        theme: ThemeData.dark(),
-        title: 'My Movies',
-        home: SafeArea(
-          child: Scaffold(
-            body: buildPageView(),
-            bottomNavigationBar: BottomNavigationBar(
-              items: buildBottomNavigationItens(),
-              currentIndex: _selectedIndex,
-              selectedItemColor: AppColors.textOnPrimary,
-              onTap: _onItemTapped,
-              elevation: 8,
-            ),
+      theme: ThemeData.dark(),
+      title: 'My Movies',
+      home: SafeArea(
+        child: Scaffold(
+          body: buildPageView(),
+          bottomNavigationBar: BottomNavigationBar(
+            items: buildBottomNavigationItens(),
+            currentIndex: _selectedIndex,
+            selectedItemColor: AppColors.textOnPrimary,
+            onTap: _onItemTapped,
+            elevation: 8,
           ),
         ),
       ),

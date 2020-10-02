@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/components/LoadingPlaceholder.dart';
+import 'package:my_movies_app/components/MovieCard.dart';
+import 'package:my_movies_app/entities/Movie.dart';
+import 'package:my_movies_app/entities/PagedMoviesRequest.dart';
+import 'package:my_movies_app/screens/Home.dart';
+import 'package:my_movies_app/services/ApiClient.dart';
+import 'package:my_movies_app/styles/AppColors.dart';
 
 class Search extends StatefulWidget {
   final List<String> list = List.generate(10, (index) => 'list $index');
@@ -14,7 +21,10 @@ class _SearchState extends State<Search> {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(
+              Icons.search,
+              color: AppColors.textOnPrimary,
+            ),
             onPressed: () {
               showSearch(
                   context: context,
@@ -25,18 +35,14 @@ class _SearchState extends State<Search> {
         centerTitle: true,
         title: Text('Buscar Filmes'),
       ),
-      body: ListView.builder(
-        itemCount: widget.list.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(widget.list[index]),
-        ),
-      ),
+      body: Home(),
     );
   }
 }
 
 class MovieSearch extends SearchDelegate<String> {
   final List<String> examples;
+  final apiClient = ApiClient();
 
   MovieSearch({this.examples}) : super(searchFieldLabel: 'Buscar filmes');
 
@@ -47,7 +53,10 @@ class MovieSearch extends SearchDelegate<String> {
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
       IconButton(
-        icon: Icon(Icons.close),
+        icon: Icon(
+          Icons.close,
+          color: AppColors.textOnPrimary,
+        ),
         onPressed: () {
           query = "";
         },
@@ -58,7 +67,10 @@ class MovieSearch extends SearchDelegate<String> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: Icon(
+        Icons.arrow_back,
+        color: AppColors.textOnPrimary,
+      ),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -67,8 +79,18 @@ class MovieSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Text('Heyyyy'),
+    final response = apiClient.searchMovies(1, query);
+
+    return FutureBuilder<PagedMoviesRequest>(
+      future: response,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return buildSearchResults(snapshot.data);
+        } else {
+          return LoadingPlaceholder();
+        }
+      },
     );
   }
 
@@ -76,21 +98,54 @@ class MovieSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> suggestions = [];
-    List<String> recentList = [];
-    query.isEmpty
-        ? suggestions = recentList
-        : suggestions
-            .addAll(examples.where((element) => element.contains(query)));
+    Future<PagedMoviesRequest> response;
+    if (query.isEmpty) {
+      response = apiClient.getPopularMovies(1);
+    } else {
+      response = apiClient.searchMovies(1, query);
+    }
+
+    return FutureBuilder<PagedMoviesRequest>(
+      future: response,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return buildSearchSuggestions(snapshot.data);
+        } else if (snapshot.hasError) {
+          return Text('oops');
+        } else {
+          return LoadingPlaceholder();
+        }
+      },
+    );
+  }
+
+  Widget buildSearchSuggestions(PagedMoviesRequest result) {
+    final movies = result?.results;
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
-        title: Text(suggestions[index]),
-        onTap: () {
-          selectedResult = suggestions[index];
-          showResults(context);
-        },
+        title: Text(movies[index].title),
+        trailing: Icon(
+          Icons.launch,
+          size: 18,
+        ),
+        leading: Icon(
+          Icons.search,
+          size: 18,
+        ),
       ),
-      itemCount: suggestions.length,
+      itemCount: movies.length,
+    );
+  }
+
+  Widget itemBuilder(Movie movie) {
+    return MovieCard(movie, (int) {}, (movie) {}, false);
+  }
+
+  Widget buildSearchResults(PagedMoviesRequest result) {
+    final movies = result.results;
+    return ListView.builder(
+      itemBuilder: (context, index) => itemBuilder(movies[index]),
+      itemCount: movies.length,
     );
   }
 }
