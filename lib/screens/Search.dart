@@ -43,6 +43,7 @@ class _SearchState extends State<Search> {
 class MovieSearch extends SearchDelegate<String> {
   final List<String> examples;
   final apiClient = ApiClient();
+  var previousRequest = PagedMoviesRequest();
 
   MovieSearch({this.examples}) : super(searchFieldLabel: 'Buscar filmes');
 
@@ -67,9 +68,10 @@ class MovieSearch extends SearchDelegate<String> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(
-        Icons.arrow_back,
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
         color: AppColors.textOnPrimary,
+        progress: transitionAnimation,
       ),
       onPressed: () {
         Navigator.pop(context);
@@ -109,30 +111,55 @@ class MovieSearch extends SearchDelegate<String> {
       future: response,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return buildSearchSuggestions(snapshot.data);
+          previousRequest = snapshot.data;
         } else if (snapshot.hasError) {
           return Text('oops');
-        } else {
-          return LoadingPlaceholder();
         }
+        return buildSearchSuggestions();
       },
     );
   }
 
-  Widget buildSearchSuggestions(PagedMoviesRequest result) {
-    final movies = result?.results;
+  Widget buildSearchSuggestions() {
+    final movies = previousRequest?.results;
     return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        title: Text(movies[index].title),
-        trailing: Icon(
-          Icons.launch,
-          size: 18,
-        ),
-        leading: Icon(
-          Icons.search,
-          size: 18,
-        ),
-      ),
+      itemBuilder: (context, index) {
+        final hasQuery =
+            movies[index].title.toLowerCase().startsWith(query.toLowerCase());
+        return ListTile(
+            onTap: () {
+              query = movies[index].title;
+              showResults(context);
+            },
+            title: RichText(
+              text: TextSpan(
+                  text: hasQuery
+                      ? movies[index].title.substring(0, query.length)
+                      : '',
+                  style: TextStyle(fontWeight: FontWeight.w900),
+                  children: [
+                    TextSpan(
+                      text: hasQuery
+                          ? movies[index].title.substring(query.length)
+                          : movies[index].title,
+                      style: TextStyle(fontWeight: FontWeight.w200),
+                    )
+                  ]),
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.launch,
+                color: ThemeData.dark().disabledColor,
+              ),
+              onPressed: () {
+                query = movies[index].title;
+              },
+            ),
+            leading: Icon(
+              Icons.search,
+              color: ThemeData.dark().disabledColor,
+            ));
+      },
       itemCount: movies.length,
     );
   }

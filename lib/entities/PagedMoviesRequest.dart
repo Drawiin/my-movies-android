@@ -7,7 +7,7 @@ class PagedMoviesRequest {
   final List<Movie> results;
 
   PagedMoviesRequest(
-      this.page, this.totalResults, this.totalPages, this.results);
+  {this.page = 1, this.totalResults = 0, this.totalPages = 1, this.results: const <Movie>[]});
 
   PagedMoviesRequest.fromJson(Map<String, dynamic> json)
       : page = json['page'],
