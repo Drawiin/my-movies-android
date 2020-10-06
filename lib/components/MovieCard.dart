@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:my_movies_app/components/LoadingPlaceholder.dart';
 import 'package:my_movies_app/entities/Movie.dart';
+import 'package:my_movies_app/screens/MovieDetails.dart';
 import 'package:my_movies_app/styles/AppColors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -14,24 +15,36 @@ class MovieCard extends StatelessWidget {
 
   MovieCard(this.movie, this.remove, this.add, this.isFavorite);
 
+  void goToDetails(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MovieDetails(
+                  movie: movie,
+                  add: add,
+                  isFavorite: isFavorite,
+                  remove: remove,
+                )));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Card(
-        color: AppColors.primary,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        elevation: 1,
-        child: Container(
-          width: double.infinity,
+    return GestureDetector(
+      onTap: () => goToDetails(context),
+      child: Hero(
+        tag: movie.id,
+        child: Card(
+          color: AppColors.primary,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          elevation: 1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
                 height: 250,
-                width: double.infinity,
                 child: Stack(
                   fit: StackFit.passthrough,
                   children: [
@@ -41,13 +54,11 @@ class MovieCard extends StatelessWidget {
                         child: LoadingPlaceholder(),
                       ),
                     ),
-                    Container(
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image:
-                            'https://image.tmdb.org/t/p/w300/${movie.backdropPath}',
-                        fit: BoxFit.fitHeight,
-                      ),
+                    FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image:
+                          'https://image.tmdb.org/t/p/w300/${movie.backdropPath}',
+                      fit: BoxFit.fitHeight,
                     ),
                     Align(
                         alignment: Alignment.topRight,

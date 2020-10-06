@@ -9,7 +9,7 @@ class ApiClient {
   static const API_KEY = 'ef60f290754b298f307a2b64735fddfb';
   static const BASE_API_URL = 'https://api.themoviedb.org/3';
   static const LANG = 'pt-BR';
-  static const IMAGE_SIZE = 'w300';
+  static const IMAGE_SIZE = 'w500';
 
   Future<PagedMoviesRequest> getPopularMovies(int page) async {
     final response = await http.get(
