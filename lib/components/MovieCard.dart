@@ -40,7 +40,7 @@ class MovieCard extends StatelessWidget {
           color: AppColors.primary,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
+            borderRadius: BorderRadius.circular(32.0),
           ),
           elevation: 1,
           child: Column(
