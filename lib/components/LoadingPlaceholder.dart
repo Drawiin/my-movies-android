@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/animations/LoadingStar.dart';
 import 'package:my_movies_app/styles/AppColors.dart';
 
 class LoadingPlaceholder extends StatelessWidget {
@@ -7,9 +8,7 @@ class LoadingPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: const CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(AppColors.textOnPrimary),
-      ),
+      child: LoadingStar(),
     );
   }
 }

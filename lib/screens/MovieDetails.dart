@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/animations/AnimatedFavoriteButtom.dart';
+import 'package:my_movies_app/animations/AnimatedStar.dart';
+import 'package:my_movies_app/animations/AnimatedStyleText.dart';
 import 'package:my_movies_app/components/LoadingPlaceholder.dart';
 import 'package:my_movies_app/components/MovieImage.dart';
 import 'package:my_movies_app/entities/Movie.dart';
@@ -53,16 +56,24 @@ class _MovieDetailsState extends State<MovieDetails> {
       child: Scaffold(
         appBar: AppBar(
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                _isFavorite ? Icons.favorite : Icons.favorite_border,
-                size: 30,
-                color: AppColors.textOnPrimary,
-              ),
-              onPressed: () => {
-                if (_isFavorite) {removeFromFavorite()} else {addToFavorite()}
-              },
-            ),
+            AnimatedFavoriteButton(
+                isFavorite: _isFavorite,
+                onPressed: () => {
+                      if (_isFavorite)
+                        {removeFromFavorite()}
+                      else
+                        {addToFavorite()}
+                    })
+            // IconButton(
+            //   icon: Icon(
+            //     _isFavorite ? Icons.favorite : Icons.favorite_border,
+            //     size: 30,
+            //     color: AppColors.textOnPrimary,
+            //   ),
+            //   onPressed: () => {
+            //     if (_isFavorite) {removeFromFavorite()} else {addToFavorite()}
+            //   },
+            // ),
           ],
           centerTitle: true,
           title: Text('Detalhes'),
@@ -96,8 +107,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                         ),
                       ),
                       MovieImage(
-                        imageUrl:
-                            apiClient.resolveImagePath(widget.movie.backdropPath),
+                        imageUrl: apiClient
+                            .resolveImagePath(widget.movie.backdropPath),
                       ),
                     ],
                   ),
@@ -127,16 +138,18 @@ class _MovieDetailsState extends State<MovieDetails> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(right: 2),
-                            child: Icon(
-                              Icons.star,
-                              size: 20,
-                              color: Colors.yellowAccent,
-                            ),
+                            child: AnimatedStar(),
                           ),
-                          Text(
+                          AnimatedStyleText(
                             widget.movie.voteAverage.toString(),
-                            style: TextStyle(
-                                color: AppColors.textOnPrimary, fontSize: 20),
+                            initialStyle: TextStyle(
+                                color: ThemeData.dark().disabledColor,
+                                fontSize: 0,
+                                fontWeight: FontWeight.w100),
+                            finalStyle: TextStyle(
+                                color: AppColors.textOnPrimary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900),
                           ),
                         ],
                       ),
@@ -148,7 +161,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                     padding: EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Text(
                       widget.movie.overview,
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18.0),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 18.0),
                     ),
                   ),
                 )

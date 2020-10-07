@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/animations/AnimatedEmptyList.dart';
 import 'package:my_movies_app/components/MovieCard.dart';
 import 'package:my_movies_app/entities/Movie.dart';
 import 'package:my_movies_app/repositories/MoviesRepository.dart';
@@ -37,7 +38,13 @@ class _FavoritesState extends State<Favorites> {
 
   Widget emptyMassage() {
     return Center(
-      child: Text('Você ainda não tem favoritos'),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedEmptyList(),
+          Text('Você ainda não tem favoritos'),
+        ],
+      ),
     );
   }
 

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_movies_app/animations/AnimatedNoFavorites.dart';
+import 'package:my_movies_app/animations/AnimatedStar.dart';
+import 'package:my_movies_app/animations/AnimatedStyleText.dart';
+import 'package:my_movies_app/animations/LoadingStar.dart';
 import 'package:my_movies_app/screens/Home.dart';
 import 'package:my_movies_app/styles/AppColors.dart';
 import 'package:my_movies_app/utils/MoviesSearchDelegate.dart';
@@ -27,7 +31,7 @@ class _SearchState extends State<Search> {
         centerTitle: true,
         title: Text('Buscar Filmes'),
       ),
-      body: Home(),
+      body: AnimatedNoFavorites(),
     );
   }
 }

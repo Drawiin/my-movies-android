@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:my_movies_app/animations/AnimatedFavoriteButtom.dart';
+import 'package:my_movies_app/animations/AnimatedStar.dart';
+import 'package:my_movies_app/animations/AnimatedStyleText.dart';
 import 'package:my_movies_app/components/LoadingPlaceholder.dart';
 import 'package:my_movies_app/entities/Movie.dart';
 import 'package:my_movies_app/screens/MovieDetails.dart';
@@ -62,16 +65,25 @@ class MovieCard extends StatelessWidget {
                     ),
                     Align(
                         alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            size: 36,
-                            color: AppColors.textOnPrimary,
-                          ),
-                          onPressed: () => {
-                            if (isFavorite) {remove(movie.id)} else {add(movie)}
-                          },
-                        )),
+                        child: AnimatedFavoriteButton(
+                            isFavorite: isFavorite,
+                            onPressed: () => {
+                                  if (isFavorite)
+                                    {remove(movie.id)}
+                                  else
+                                    {add(movie)}
+                                })
+                        // IconButton(
+                        //   icon: Icon(
+                        //     isFavorite ? Icons.favorite : Icons.favorite_border,
+                        //     size: 36,
+                        //     color: AppColors.textOnPrimary,
+                        //   ),
+                        //   onPressed: () => {
+                        //     if (isFavorite) {remove(movie.id)} else {add(movie)}
+                        //   },
+                        // )
+                        ),
                   ],
                 ),
               ),
@@ -100,16 +112,18 @@ class MovieCard extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(right: 2),
-                          child: Icon(
-                            Icons.star,
-                            size: 20,
-                            color: Colors.yellowAccent,
-                          ),
+                          child: AnimatedStar(),
                         ),
-                        Text(
+                        AnimatedStyleText(
                           movie.voteAverage.toString(),
-                          style: TextStyle(
-                              color: AppColors.textOnPrimary, fontSize: 20),
+                          initialStyle: TextStyle(
+                              color: ThemeData.dark().disabledColor,
+                              fontSize: 0,
+                              fontWeight: FontWeight.w100),
+                          finalStyle: TextStyle(
+                              color: AppColors.textOnPrimary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900),
                         ),
                       ],
                     ),
