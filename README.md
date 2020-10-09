@@ -1,16 +1,41 @@
-# my_movies_app
+<h1 align="center">
+    My Movies
+</h1>
 
-A new Flutter application.
+<p align="center">
+  <a href="https://app.netlify.com/sites/gedora/deploys">
+    <img alt="Deploy" title="#delicinha" src="https://api.netlify.com/api/v1/badges/955ab6dd-3394-4a75-bfdc-eecc6c517cdf/deploy-status"/>
+   </a> 
+</p>
 
-## Getting Started
+<p align="center">
+  <a href="#rocket-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-licença">Licença</a>
+</p>
 
-This project is a starting point for a Flutter application.
+<br>
 
-A few resources to get you started if this is your first Flutter project:
+<p align="center">
+  <img alt="Gedora" src=".github/gedora.png" width="100%">
+</p>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## :rocket: Tecnologias
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Esse projeto foi desenvolvido com as seguintes tecnologias:
+
+- [React](https://reactjs.org)
+- [Redux](https://redux.ord)
+- [React Router Dom](https://reactraining.com)
+
+## 💻 Projeto
+
+A Gedora é uma SPA, que visa ser dinâmica, rápida e mobile frindly, para aqueles que desejam uma experiencia de compra fashion e uma loja fashion, e você pode ver em funcionamento [aqui](https://gedora.netlify.app/).
+
+## :memo: Licença
+
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
+
+---
+
+Feito com ♥ by Vinicius :wave: [Me siga no twitter](https://twitter.com)
